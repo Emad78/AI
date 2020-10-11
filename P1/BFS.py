@@ -1,4 +1,8 @@
-from queue import Queue
+from collections import deque
+from time import time
+def co(l1):
+    l2 = l1[:]
+    return list(l2)
 def readFile(name):
     f = open(name, 'r')
     result = []
@@ -58,10 +62,13 @@ def is_possible(snake, direction, mokh):
 
 def newState(now_state, q, direction, mokh,checked):
     if is_possible(now_state[0][:], direction, mokh):
-        new_state = createState(now_state[0].copy(), now_state[1], now_state[2].copy(),direction, mokh, now_state[3].copy())
+        l1 = now_state[0][:]
+        l2 = now_state[2].copy()
+        l3 = now_state[3][:]
+        new_state = createState(l1, now_state[1], l2,direction, mokh, l3)
         if checkedState(new_state[0], new_state[1], new_state[2]) in checked:
             return False 
-        q.put(new_state)
+        q.append(new_state)
         if new_state[1] == 0:
             print(new_state[3][1:])
             return True
@@ -74,13 +81,13 @@ def BFS():
     snake = [init[1]]
     t_point = init[2]
     points = init[3]
-    q = Queue()
+    q = []
     checked = set()
-    q.put(createState(snake, t_point, points, [0, 0], mokh,[]))
-    k = 1
-    while(not q.empty()):
-        k = 0
-        now_state = q.get()
+    q.append(createState(snake, t_point, points, [0, 0], mokh,[]))
+    k = 0
+    while(len(q)):
+        now_state = q[k]
+        k += 1
         checked.add(checkedState(now_state[0], now_state[1], now_state[2]))
         if now_state[1] == 0:
             print(now_state[3][1:])
@@ -93,4 +100,6 @@ def BFS():
             return True
         if newState(now_state, q, [-1, 0], mokh, checked):
             return True
+st = time()
 BFS()
+print(time() - st)

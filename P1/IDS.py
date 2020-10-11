@@ -1,3 +1,4 @@
+from time import time
 def readFile(name):
     f = open(name, 'r')
     result = []
@@ -17,7 +18,7 @@ def readFile(name):
     f.close()
     return result
 
-def checkedState(snake, t_point, points):
+def checkedState(snake, t_point, points, depth):
     s = list()
     for it in snake:
         s.append(tuple(it))
@@ -25,7 +26,7 @@ def checkedState(snake, t_point, points):
     p = list()
     for y, x in points:
         p.append((y, x, points[(y, x)]))
-    return (s, t_point, tuple(p))
+    return (s, t_point, tuple(p), depth)
 
 def createState(snake, t_point, points, direct, mokh, path, depth):
 
@@ -58,7 +59,7 @@ def is_possible(snake, direction, mokh):
 def newState(now_state, q, direction, mokh,checked):
     if is_possible(now_state[0][:], direction, mokh):
         new_state = createState(now_state[0].copy(), now_state[1], now_state[2].copy(),direction, mokh, now_state[3].copy(), now_state[4]+1)
-        if checkedState(new_state[0], new_state[1], new_state[2]) in checked:
+        if checkedState(new_state[0], new_state[1], new_state[2], len(new_state[3]) - 1) in checked:
             return False 
         q.append(new_state)
         if new_state[1] == 0:
@@ -81,7 +82,7 @@ def IDS():
         q.append(createState(snake, t_point, points, [0, 0], mokh,[], 0))
         while len(q) != 0:
             now_state = q.pop()
-#            checked.add(checkedState(now_state[0], now_state[1], now_state[2]))
+            checked.add(checkedState(now_state[0], now_state[1], now_state[2], len(now_state[3]) - 1))
             if now_state[1] == 0:
                 print(now_state[3][1:])
                 return True
@@ -95,4 +96,6 @@ def IDS():
                 if newState(now_state, q, [-1, 0], mokh, checked):
                     return True
         depth += 1
+st = time()
 IDS()
+print(time() - st)
