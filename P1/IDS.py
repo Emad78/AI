@@ -71,6 +71,8 @@ def newState(now_state, q, direction, mokh,checked):
 def IDS():    
     addr = input()
     init = readFile(addr)
+    global st
+    st = time()
     mokh = init[0]
     snake = [init[1]]
     t_point = init[2]
@@ -96,6 +98,6 @@ def IDS():
                 if newState(now_state, q, [-1, 0], mokh, checked):
                     return True
         depth += 1
-st = time()
+st = 0
 IDS()
 print(time() - st)

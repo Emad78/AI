@@ -66,8 +66,10 @@ def newState(now_state, q, direction, mokh,checked):
         l2 = now_state[2].copy()
         l3 = now_state[3][:]
         new_state = createState(l1, now_state[1], l2,direction, mokh, l3)
-        if checkedState(new_state[0], new_state[1], new_state[2]) in checked:
+        check = checkedState(new_state[0], new_state[1], new_state[2]) 
+        if check in checked:
             return False 
+        checked.add(check)
         q.append(new_state)
         if new_state[1] == 0:
             print(new_state[3][1:])
@@ -77,6 +79,8 @@ def newState(now_state, q, direction, mokh,checked):
 def BFS():    
     addr = input()
     init = readFile(addr)
+    global st 
+    st = time()
     mokh = init[0]
     snake = [init[1]]
     t_point = init[2]
@@ -84,11 +88,12 @@ def BFS():
     q = []
     checked = set()
     q.append(createState(snake, t_point, points, [0, 0], mokh,[]))
+    checked.add(checkedState(q[0][0], q[0][1], q[0][2]))
     k = 0
     while(len(q)):
         now_state = q[k]
         k += 1
-        checked.add(checkedState(now_state[0], now_state[1], now_state[2]))
+        
         if now_state[1] == 0:
             print(now_state[3][1:])
             return True
@@ -100,6 +105,6 @@ def BFS():
             return True
         if newState(now_state, q, [-1, 0], mokh, checked):
             return True
-st = time()
+st = 0 
 BFS()
-print(time() - st)
+print(time()-st)
