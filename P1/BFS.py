@@ -1,8 +1,4 @@
-from collections import deque
 from time import time
-def co(l1):
-    l2 = l1[:]
-    return list(l2)
 def readFile(name):
     f = open(name, 'r')
     result = []

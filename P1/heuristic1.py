@@ -1,8 +1,4 @@
-from collections import deque
 from time import time
-def co(l1):
-    l2 = l1[:]
-    return list(l2)
 def readFile(name):
     f = open(name, 'r')
     result = []
@@ -33,7 +29,7 @@ def checkedState(snake, t_point, points):
     return (s, t_point, tuple(p))
 
 def createState(snake, t_point, points, direct, mokh, path, g):
-    weight = 2
+    weight = 5
     head_y = (snake[-1][0]+direct[0]+mokh[0])%mokh[0] 
     head_x = (snake[-1][1]+direct[1]+mokh[1])%mokh[1]
 
