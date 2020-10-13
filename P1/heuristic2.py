@@ -55,7 +55,7 @@ def createState(snake, t_point, points, direct, mokh, path, g):
         for i in range(len(snake)-1):
             snake[i] = snake[i+1]
         snake[-1] = [head_y, head_x]
-    path.append(direct)
+    path.append(direct[2])
     return [snake, t_point, points, path, g+1, h(snake[-1], points, mokh[0], mokh[1])+g+1]     
 
 def is_possible(snake, direction, mokh):
@@ -103,21 +103,29 @@ def ASTAR():
     points = init[3]
     q = []
     checked = set()
-    q.append(createState(snake, t_point, points, [0, 0], mokh,[], 0))
+    q.append(createState(snake, t_point, points, [0, 0, ''], mokh,[], 0))
     checked.add(checkedState(q[0][0], q[0][1], q[0][2]))
+#    global states
+#    global uniqe
     while(len(q)):
+#        uniqe += 1
+#        states = len(checked)
         now_state = q.pop()
         if now_state[1] == 0:
             print(now_state[3][1:])
             return True
-        if newState(now_state, q, [0, 1], mokh, checked):
+        if newState(now_state, q, [0, 1, 'R'], mokh, checked):
             return True
-        if newState(now_state, q, [0, -1], mokh, checked):
+        if newState(now_state, q, [0, -1, 'L'], mokh, checked):
             return True
-        if newState(now_state, q, [1, 0], mokh, checked):
+        if newState(now_state, q, [1, 0, 'D'], mokh, checked):
             return True
-        if newState(now_state, q, [-1, 0], mokh, checked):
+        if newState(now_state, q, [-1, 0, 'U'], mokh, checked):
             return True
-st = 0 
+st = 0
+#states = 0
+#uniqe = 0
 ASTAR()
+#print("States: ", states)
+#print("Uniqe: ", uniqe)
 print(time()-st)

@@ -29,7 +29,7 @@ def checkedState(snake, t_point, points, depth):
     return (s, t_point, tuple(p), depth)
 
 def createState(snake, t_point, points, direct, mokh, path, depth):
-
+    
     head_y = (snake[-1][0]+direct[0]+mokh[0])%mokh[0] 
     head_x = (snake[-1][1]+direct[1]+mokh[1])%mokh[1]
 
@@ -43,7 +43,7 @@ def createState(snake, t_point, points, direct, mokh, path, depth):
         for i in range(len(snake)-1):
             snake[i] = snake[i+1]
         snake[-1] = [head_y, head_x]
-    path.append(direct)
+    path.append(direct[2])
     return [snake, t_point, points, path, depth]     
 
 def is_possible(snake, direction, mokh):
@@ -57,6 +57,8 @@ def is_possible(snake, direction, mokh):
     return True 
 
 def newState(now_state, q, direction, mokh,checked):
+#    global states
+#    states += 1
     if is_possible(now_state[0][:], direction, mokh):
         new_state = createState(now_state[0].copy(), now_state[1], now_state[2].copy(),direction, mokh, now_state[3].copy(), now_state[4]+1)
         if checkedState(new_state[0], new_state[1], new_state[2], len(new_state[3]) - 1) in checked:
@@ -79,25 +81,36 @@ def IDS():
     points = init[3]
     q = []
     depth = 0
+ #   global uniqe
+ #   global states
+ #   un = set()
     while(True):
         checked = set()
-        q.append(createState(snake, t_point, points, [0, 0], mokh,[], 0))
+        q.append(createState(snake, t_point, points, [0, 0,''], mokh,[], 0))
         while len(q) != 0:
+  #          states += 1
             now_state = q.pop()
+ #           un.add(checkedState(now_state[0], now_state[1], now_state[2], len(now_state[3]) - 1))
+ #           uniqe = len(un)
             checked.add(checkedState(now_state[0], now_state[1], now_state[2], len(now_state[3]) - 1))
             if now_state[1] == 0:
                 print(now_state[3][1:])
                 return True
             if now_state[4]+1 <= depth :
-                if newState(now_state, q, [0, 1], mokh, checked):
+                if newState(now_state, q, [0, 1,'R'], mokh, checked):
                     return True
-                if newState(now_state, q, [0, -1], mokh, checked):
+                if newState(now_state, q, [0, -1,'L'], mokh, checked):
                     return True
-                if newState(now_state, q, [1, 0], mokh, checked):
+                if newState(now_state, q, [1, 0, 'D'], mokh, checked):
                     return True
-                if newState(now_state, q, [-1, 0], mokh, checked):
+                if newState(now_state, q, [-1, 0, 'U'], mokh, checked):
                     return True
         depth += 1
 st = 0
+#states = 0
+#uniqe = 0
 IDS()
+#print("states: ", states)
+#print("Uniqe: ", uniqe)
 print(time() - st)
+
