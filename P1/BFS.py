@@ -29,7 +29,7 @@ def checkedState(snake, t_point, points):
     return (s, t_point, tuple(p))
 
 def createState(snake, t_point, points, direct, mokh, path):
-
+    table = {(0,0):'',(0, 1) :'R', (0, -1):'L', (-1, 0) :'U', (1, 0):'D'}
     head_y = (snake[-1][0]+direct[0]+mokh[0])%mokh[0] 
     head_x = (snake[-1][1]+direct[1]+mokh[1])%mokh[1]
 
@@ -43,7 +43,7 @@ def createState(snake, t_point, points, direct, mokh, path):
         for i in range(len(snake)-1):
             snake[i] = snake[i+1]
         snake[-1] = [head_y, head_x]
-    path.append(direct)
+    path.append(table[tuple(direct)])
     return [snake, t_point, points, path]     
 
 def is_possible(snake, direction, mokh):
@@ -57,6 +57,8 @@ def is_possible(snake, direction, mokh):
     return True 
 
 def newState(now_state, q, direction, mokh,checked):
+    global states
+    states += 1
     if is_possible(now_state[0][:], direction, mokh):
         l1 = now_state[0][:]
         l2 = now_state[2].copy()
@@ -86,10 +88,11 @@ def BFS():
     q.append(createState(snake, t_point, points, [0, 0], mokh,[]))
     checked.add(checkedState(q[0][0], q[0][1], q[0][2]))
     k = 0
+    global uniqe
     while(len(q)):
         now_state = q[k]
         k += 1
-        
+        uniqe += 1
         if now_state[1] == 0:
             print(now_state[3][1:])
             return True
@@ -101,6 +104,10 @@ def BFS():
             return True
         if newState(now_state, q, [-1, 0], mokh, checked):
             return True
-st = 0 
+st = 0
+states = 0
+uniqe = 0
 BFS()
+print("Uniqe: ", uniqe)
+print("States: ", states)
 print(time()-st)
