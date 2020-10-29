@@ -103,16 +103,6 @@ def crossover(generation, pc):
 
 def select(population, length):
     return population[:length**2]
-    l = []
-    p = []
-    le = len(population)
-    for i in range(le):
-        l += (le- i) * [i]
-    for i in range(length ** 2):
-        index = randint(0, le-1)
-        p.append(population[index])
-    return p
-
 def mutation(population, pm):
     p = []
     for it in population:
